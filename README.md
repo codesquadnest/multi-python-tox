@@ -98,7 +98,7 @@ project-root/
 
    This will:
    - Change the directory to the project root.
-   - Build the Docker image (tagged as `my-tox-container`).
+   - Build the Docker image (tagged as `multi-python-tox`).
    - Run the container, mounting the `tests/` directory so that `tox` can detect and run tests for all the installed Python versions.
 
 If everything is set up correctly, you should see output from tox running tests in environments for Python 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, and 3.13.
