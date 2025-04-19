@@ -1,21 +1,21 @@
 # Multi-Python Tox Testing with Docker and uv
 
 This repository demonstrates how to set up a Docker-based testing environment that installs multiple Python versions
-(3.7–3.13) using [uv](https://github.com/astral-sh/uv) and runs tests on all these versions via
+(3.7–3.14) using [uv](https://github.com/astral-sh/uv) and runs tests on all these versions via
 [tox](https://tox.readthedocs.io/) with the [tox-uv](https://github.com/astral-sh/uv) plugin.
 
 ## Project Overview
 
 The project includes:
 
-- A **Dockerfile** that creates a lightweight container based on `python:3.12-slim-bookworm`:
+- A **Dockerfile** that creates a lightweight container based on `python:3.13-slim-bookworm`:
   - Installs `uv` to manage multiple Python versions.
-  - Installs Python versions 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, and 3.13.
+  - Installs Python versions 3.7 to 3.14 in `/home/ciuser/.local/bin`.
   - Sets up a non-root user (`ciuser`) and configures the environment.
   - Installs `tox` and the `tox-uv` plugin for multi-Python testing.
 - A **tox.ini** file that configures tox to run tests in environments for all the specified Python versions.
 - A simple test file, **test_dummy.py**, which contains dummy tests to verify that the environment works.
-- A **build_and_test.sh** script located in the tests folder to build the Docker image and run the container, mounting
+- A **test_build.sh** script located in the tests folder to build the Docker image and run the container, mounting
 the tests directory so that tox can run all test environments.
 
 ## Project Structure
@@ -26,7 +26,7 @@ project-root/
 └── tests/
     ├── tox.ini
     ├── test_dummy.py
-    └── build_and_test.sh
+    └── test_build.sh
 ```
 
 ## Prerequisites
@@ -45,11 +45,11 @@ project-root/
    - Setting the default command to run `tox`.
 
 2. **tox.ini**:  
-   Located in the `tests/` directory, this file defines the environments for Python 3.7 through 3.13:
+   Located in the `tests/` directory, this file defines the environments for Python 3.7 through 3.14:
 
     ```ini
     [tox]
-    envlist = py37,py38,py39,py310,py311,py312,py313
+    envlist = py37,py38,py39,py310,py311,py312,py313,py314
 
     [testenv]
     deps = pytest
@@ -66,7 +66,7 @@ project-root/
        assert True
    ```
 
-4. **build_and_test.sh**:  
+4. **test_build.sh**:  
    This script builds the Docker image from the project root and runs the container with the tests mounted. It overrides
    the default tox configuration to use the one in the tests folder.
 
@@ -86,14 +86,14 @@ project-root/
 
    ```bash
    cd tests
-   chmod +x build_and_test.sh
+   chmod +x test_build.sh
    ```
 
 3. **Run the Build and Test Script**
    From the `tests/` directory, execute:
 
    ```bash
-   ./build_and_test.sh
+   ./test_build.sh
    ```
 
    This will:
@@ -109,7 +109,7 @@ The release of the Docker image is available on GitHub Container Registry. You c
 docker run -it -v $PWD:/work --workdir /work ghcr.io/codesquadnest/multi-python-tox:main
 ```
 
-If everything is set up correctly, you should see output from tox running tests in environments for Python 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, and 3.13.
+If everything is set up correctly, you should see output from tox running tests in environments for Python 3.7 through 3.14.
 
 ## Contributing
 
