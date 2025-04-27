@@ -16,7 +16,7 @@ The project includes:
 - A **tox.ini** file that configures tox to run tests in environments for all the specified Python versions.
 - A simple test file, **test_dummy.py**, which contains dummy tests to verify that the environment works.
 - A **test_build.sh** script located in the tests folder to build the Docker image and run the container, mounting
-the tests directory so that tox can run all test environments.
+  the tests directory so that tox can run all test environments.
 
 ## Project Structure
 
@@ -38,6 +38,7 @@ project-root/
 
 1. **Dockerfile**:  
    The Dockerfile in the root directory sets up the Python environment by:
+
    - Copying the necessary `uv` binaries.
    - Creating a non-root user.
    - Installing multiple Python versions into `/home/ciuser/.local/bin`.
@@ -47,23 +48,23 @@ project-root/
 2. **tox.ini**:  
    Located in the `tests/` directory, this file defines the environments for Python 3.7 through 3.14:
 
-    ```ini
-    [tox]
-    envlist = py37,py38,py39,py310,py311,py312,py313,py314
+   ```ini
+   [tox]
+   envlist = py37,py38,py39,py310,py311,py312,py313,py314
 
-    [testenv]
-    deps = pytest
-    commands = pytest
-    ```
+   [testenv]
+   deps = pytest
+   commands = pytest
+   ```
 
    This instructs tox to create a testing environment for each Python version and run `pytest`.
 
 3. **Test File**:  
    A simple test in `tests/test_dummy.py` verifies that tests run:
 
-    ```python
+   ```python
    def test_always_passes():
-       assert True
+      assert True
    ```
 
 4. **test_build.sh**:  
@@ -97,6 +98,7 @@ project-root/
    ```
 
    This will:
+
    - Change the directory to the project root.
    - Build the Docker image (tagged as `multi-python-tox`).
    - Run the container, mounting the `tests/` directory so that `tox` can detect and run tests for all the installed Python versions.
@@ -106,7 +108,13 @@ project-root/
 The release of the Docker image is available on GitHub Container Registry. You can pull the image and run the container with the following command:
 
 ```bash
-docker run -it -v $PWD:/work --workdir /work ghcr.io/codesquadnest/multi-python-tox:main
+docker run --rm -it -v "$(pwd):/work" --workdir /work ghcr.io/codesquadnest/multi-python-tox:main
+```
+
+**Note:** To avoid permission conflicts with the pre-built image, delete the `.tox` directory before running the container:
+
+```bash
+rm -rf .tox
 ```
 
 If everything is set up correctly, you should see output from tox running tests in environments for Python 3.7 through 3.14.
