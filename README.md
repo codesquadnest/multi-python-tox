@@ -1,7 +1,7 @@
 # Multi-Python Tox Testing with Docker and uv
 
 This repository demonstrates how to set up a Docker-based testing environment that installs multiple Python versions
-(3.7–3.14) using [uv](https://github.com/astral-sh/uv) and runs tests on all these versions via
+(3.8–3.14) using [uv](https://github.com/astral-sh/uv) and runs tests on all these versions via
 [tox](https://tox.readthedocs.io/) with the [tox-uv](https://github.com/astral-sh/uv) plugin.
 
 ## Project Overview
@@ -10,7 +10,7 @@ The project includes:
 
 - A **Dockerfile** that creates a lightweight container based on `python:3.13-slim-bookworm`:
   - Installs `uv` to manage multiple Python versions.
-  - Installs Python versions 3.7 to 3.14 in `/home/ciuser/.local/bin`.
+  - Installs Python versions 3.8 to 3.14 in `/home/ciuser/.local/bin`.
   - Sets up a non-root user (`ciuser`) and configures the environment.
   - Installs `tox` and the `tox-uv` plugin for multi-Python testing.
 - A **tox.ini** file that configures tox to run tests in environments for all the specified Python versions.
@@ -46,11 +46,11 @@ project-root/
    - Setting the default command to run `tox`.
 
 2. **tox.ini**:  
-   Located in the `tests/` directory, this file defines the environments for Python 3.7 through 3.14:
+   Located in the `tests/` directory, this file defines the environments for Python 3.8 through 3.14:
 
    ```ini
    [tox]
-   envlist = py37,py38,py39,py310,py311,py312,py313,py314
+   envlist = py38,py39,py310,py311,py312,py313,py314
 
    [testenv]
    deps = pytest
@@ -117,7 +117,7 @@ docker run --rm -it -v "$(pwd):/work" --workdir /work ghcr.io/codesquadnest/mult
 rm -rf .tox
 ```
 
-If everything is set up correctly, you should see output from tox running tests in environments for Python 3.7 through 3.14.
+If everything is set up correctly, you should see output from tox running tests in environments for Python 3.8 through 3.14.
 
 ## Contributing
 
